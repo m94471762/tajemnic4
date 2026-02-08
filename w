@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>Walentynki dla Ciebie 💖</title>
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background: linear-gradient(to bottom, #ffd1dc, #ffe6f0);
+  }
+
+  .slide {
+    display: none;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+    color: #880d5e;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .slide.active { display: flex; }
+
+  .slide h1 {
+    font-size: 56px;
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+
+  .slide p {
+    font-size: 32px;
+    line-height: 1.4;
+  }
+
+  button {
+    margin: 10px;
+    padding: 12px 24px;
+    font-size: 26px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+
+  button:hover { transform: scale(1.1); }
+  #yesBtn { background-color: #ff6b81; color: white; }
+  #noBtn { background-color: #aaa; color: white; cursor: default; }
+  .nextBtn { background-color: #ff8fc1; color: white; }
+
+  .pulsing { display: inline-block; animation: pulse 1s infinite; }
+  @keyframes pulse { 0% {transform: scale(1);} 50% {transform: scale(1.3);} 100% {transform: scale(1);} }
+
+  .confetti { position: absolute; top: 0; pointer-events: none; z-index: 100; }
+  .confetti span { position: absolute; font-size: 24px; animation: fall 2s linear forwards; }
+  @keyframes fall { 0% {transform: translateY(0) rotate(0deg);} 100% {transform: translateY(600px) rotate(360deg);} }
+
+  .hello-kitty-img {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 180px;
+    pointer-events: none;
+    opacity: 0.9;
+    z-index: 200;
+  }
+</style>
+</head>
+<body>
+
+<!-- Audio w tle, startuje po kliknięciu -->
+<audio id="bgMusic" src="Edd_Sheeran_-_Perfect.mp3" loop></audio>
+
+<!-- Slajd 1 -->
+<div class="slide active" id="slide1">
+  <h1>Cześć słonko, została byś moją walentynką? 💖💗💘</h1>
+  <div>
+    <button id="yesBtn">Tak 💘💗💖</button>
+    <button id="noBtn">Nie 😢💔💔</button>
+  </div>
+</div>
+
+<!-- Slajd 2 -->
+<div class="slide" id="slide2">
+  <h1>Skoro to czytasz, to zdecydowałaś zostać moją walentynką 💘💖</h1>
+  <p>Dzięki temu sprawiłaś, że jestem największym farciarzem na całym świecie 🌍💗<br>Kocham cię ❤️💞💘</p>
+  <button class="nextBtn">Dalej 💖</button>
+</div>
+
+<!-- Slajd 3 -->
+<div class="slide" id="slide3">
+  <p>Chciałbym ci, skarbie, podziękować, że jesteś 💞💖<br>
+  Nie masz pojęcia, jak bardzo się cieszę, że cię mam 🥰💘<br>
+  Jesteś dla mnie najważniejsza 💖💗 i nic ani nikt tego nigdy nie zmieni.<br>
+  Ponieważ kocham cię najmocniej na świecie 🌍❤️💞 tylko ciebie, słonko moje 💖💘</p>
+  <button class="nextBtn">Dalej 💖</button>
+</div>
+
+<!-- Slajd 4 -->
+<div class="slide" id="slide4">
+  <p>Za twój uśmiech 💗💖</p>
+  <p>Za twoje oczy 👀💘💞</p>
+  <p>Za to, jak sprawiasz, że czuję się szczęśliwy 🥰💖</p>
+  <p>Za to, że jesteś sobą 💞💗</p>
+  <button class="nextBtn">Dalej 💖</button>
+</div>
+
+<!-- Slajd 5 -->
+<div class="slide" id="slide5">
+  <h1>Zawsze będę wybierał ciebie ❤️‍🔥💖💞</h1>
+  <p>Kocham cię najbardziej na świecie 💖🌍💘</p>
+  <p><strong>Twój Mateusz już zawsze <span class="pulsing">💌💗💖</span></strong></p>
+</div>
+
+<!-- Hello Kitty z serduszkiem -->
+<img src="https://imgbin.com/png/WDm8LfTw/hello-kitty-hello-kitty-holding-a-heart-png" 
+     alt="Hello Kitty z serduszkiem" class="hello-kitty-img">
+
+<script>
+const slides = document.querySelectorAll('.slide');
+let current = 0;
+
+// przycisk „Tak” – odtwarzanie muzyki + konfetti + przejście do następnego slajdu
+document.getElementById('yesBtn').addEventListener('click', () => {
+  const audio = document.getElementById('bgMusic');
+  audio.play().catch(err => console.log("Muzyka nie może się odtworzyć:", err));
+  createConfetti();
+  nextSlide();
+});
+
+// przyciski „Dalej”
+document.querySelectorAll('.nextBtn').forEach(btn => {
+  btn.addEventListener('click', nextSlide);
+});
+
+// konfetti
+function createConfetti() {
+  for(let i = 0; i < 30; i++){
+    const c = document.createElement('span');
+    c.innerText = '💖';
+    c.style.left = Math.random() * window.innerWidth + 'px';
+    c.style.fontSize = (20 + Math.random()*20) + 'px';
+    c.style.animationDuration = (2 + Math.random()*2) + 's';
+    c.classList.add('confetti');
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 4000);
+  }
+}
+
+function nextSlide() {
+  slides[current].classList.remove('active');
+  current++;
+  if (current < slides.length) slides[current].classList.add('active');
+}
+</script>
+
+</body>
+</html>
